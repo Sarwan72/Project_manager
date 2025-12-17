@@ -1,9 +1,8 @@
 import { useState } from "react";
 import type { Task, Priority,category } from "../types/task";
 import { nanoid } from "nanoid";
-
 interface Props {
-  addTask: (task: Task) => void;
+  onSubmit: (task: Omit<Task, "_id">) => void;
 }
 
 const TaskInput = ({ onSubmit }: Props) => {
@@ -29,9 +28,10 @@ const TaskInput = ({ onSubmit }: Props) => {
   status: "To Do",           
     });
 
-    setText("");
-    setPriority("Medium");
-    // setCategory("General");
+   setTask("");
+setDescription("");
+setPriority("Medium");
+
   };
 
   return (
@@ -51,6 +51,7 @@ const TaskInput = ({ onSubmit }: Props) => {
 
 
       <button
+        type="button"
         onClick={submit}
         className="bg-yellow-400 text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-300"
       >
@@ -67,15 +68,6 @@ const TaskInput = ({ onSubmit }: Props) => {
         <option>Low</option>
       </select>
 
-      {/* <select
-        value={category}
-        onChange={(e) => setCategory(e.target.value as Category)}
-        className="rounded-md px-3 py-2"
-      >
-        <option>General</option>
-        <option>Work</option>
-        <option>Personal</option>
-      </select> */}
     </div>
   );
 };

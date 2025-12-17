@@ -10,7 +10,8 @@ export const getTasks = async (req: AuthRequest, res: Response) => {
         { creatorId: req.userId },
         { assignedToId: req.userId },
       ],
-    });
+    }).sort({ createdAt: -1 });
+
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch tasks" });
@@ -19,41 +20,103 @@ export const getTasks = async (req: AuthRequest, res: Response) => {
 
 export const createTask = async (req: AuthRequest, res: Response) => {
   try {
-     console.log("USER ID:", req.userId);
-    console.log("BODY:", req.body);
+    const { title, description, priority, status, dueDate } = req.body;
+
+    //  VALIDATION
+    if (!title || !title.trim()) {
+      return res.status(400).json({ message: "Title is required" });
+    }
+
     const task = await Task.create({
-      ...req.body,
+      title: title.trim(),
+      description: description?.trim() || "",
+      priority: priority || "Medium",
+      status: status || "To Do",
+      dueDate: dueDate || null,
       creatorId: req.userId,
     });
 
     getIO().emit("task:created", task);
     res.status(201).json(task);
   } catch (error) {
-     console.error("CREATE TASK ERROR:", error);
+    console.error("CREATE TASK ERROR:", error);
     res.status(500).json({ message: "Task creation failed" });
   }
 };
 
+
+// export const updateTask = async (req: AuthRequest, res: Response) => {
+//   const { id } = req.params;
+
+//   const task = await Task.findOneAndUpdate(
+//     { _id: id, creatorId: req.userId },
+//     req.body,
+//     { new: true, runValidators: true }
+//   );
+
+//   if (!task) {
+//     return res.status(404).json({ message: "Task not found" });
+//   }
+
+//   res.json(task);
+// };
 export const updateTask = async (req: AuthRequest, res: Response) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const { title, description, priority, status, dueDate } = req.body;
 
-  const task = await Task.findOneAndUpdate(
-    { _id: id, creatorId: req.userId },
-    req.body,
-    { new: true, runValidators: true }
-  );
+    //  VALIDATION
+    if (title !== undefined && !title.trim()) {
+      return res.status(400).json({ message: "Title cannot be empty" });
+    }
 
-  if (!task) {
-    return res.status(404).json({ message: "Task not found" });
+    const task = await Task.findOneAndUpdate(
+      { _id: id, creatorId: req.userId },
+      {
+        ...(title !== undefined && { title: title.trim() }),
+        ...(description !== undefined && {
+          description: description.trim(),
+        }),
+        ...(priority && { priority }),
+        ...(status && { status }),
+        ...(dueDate && { dueDate }),
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    getIO().emit("task:updated", task);
+    res.json(task);
+  } catch (error) {
+    res.status(500).json({ message: "Task update failed" });
   }
-
-  res.json(task);
 };
 
 
+// export const deleteTask = async (req: AuthRequest, res: Response) => {
+//   try {
+//     await Task.findByIdAndDelete(req.params.id);
+//     getIO().emit("task:deleted", req.params.id);
+//     res.status(204).send();
+//   } catch (error) {
+//     res.status(500).json({ message: "Task delete failed" });
+//   }
+// };
+
 export const deleteTask = async (req: AuthRequest, res: Response) => {
   try {
-    await Task.findByIdAndDelete(req.params.id);
+    const task = await Task.findOneAndDelete({
+      _id: req.params.id,
+      creatorId: req.userId,
+    });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
     getIO().emit("task:deleted", req.params.id);
     res.status(204).send();
   } catch (error) {

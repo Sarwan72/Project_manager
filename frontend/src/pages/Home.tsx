@@ -19,34 +19,31 @@ import {
 const Home = () => {
   const queryClient = useQueryClient();
 
-  // 🔹 FETCH TASKS
-  const { data: tasks = [], isLoading } = useQuery<Task[]>({
-    queryKey: ["tasks"],
-    queryFn: fetchTasks,
-  });
+  // const { data: tasks = [], isLoading } = useQuery<Task[]>({
+  //   queryKey: ["tasks"],
+  //   queryFn: fetchTasks,
+  // });
 
-  // 🔹 CREATE TASK
+ const { data: tasks = [], isLoading } = useQuery<Task[]>({
+  queryKey: ["tasks"],
+  queryFn: fetchTasks,
+});
+
   const createMutation = useMutation({
     mutationFn: createTask,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
-  // 🔹 UPDATE TASK
   const updateMutation = useMutation({
     mutationFn: updateTask,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
-  // 🔹 DELETE TASK
   const deleteMutation = useMutation({
     mutationFn: deleteTask,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
-  // 🔥 SOCKET.IO REAL-TIME SYNC
   useEffect(() => {
     socket.on("task:created", () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -66,23 +63,19 @@ const Home = () => {
       socket.off("task:deleted");
     };
   }, [queryClient]);
-
+const orderedTasks = [...tasks].reverse();
   return (
     <div className="min-h-screen bg-black">
       <Header />
 
       <main className="max-w-6xl mx-auto p-6 space-y-6">
         {/* CREATE TASK */}
-        <TaskInput
-          onSubmit={(data) => createMutation.mutate(data)}
-        />
+        <TaskInput onSubmit={(data) => createMutation.mutate(data)} />
 
         {/* TASK LIST */}
         <div className="space-y-4">
           {isLoading && (
-            <p className="text-gray-400 text-center">
-              Loading tasks...
-            </p>
+            <p className="text-gray-400 text-center">Loading tasks...</p>
           )}
 
           {!isLoading && tasks.length === 0 && (
@@ -91,26 +84,25 @@ const Home = () => {
             </p>
           )}
 
-          {[...tasks].reverse().map((task) => (
-  <TaskItem
-    key={task._id}
-    task={task}
-    onStatusChange={(status: Status) =>
-      updateMutation.mutate({
-        id: task._id,
-        data: { status },
-      })
-    }
-    onUpdate={(data) =>
-      updateMutation.mutate({
-        id: task._id,
-        data,
-      })
-    }
-    onDelete={() => deleteMutation.mutate(task._id)}
-  />
-))}
-
+         {orderedTasks.map((task) => (
+            <TaskItem
+              key={task._id}
+              task={task}
+              onStatusChange={(status: Status) =>
+                updateMutation.mutate({
+                  id: task._id,
+                  data: { status },
+                })
+              }
+              onUpdate={(data) =>
+                updateMutation.mutate({
+                  id: task._id,
+                  data,
+                })
+              }
+              onDelete={() => deleteMutation.mutate(task._id)}
+            />
+          ))}
         </div>
 
         {/* PROGRESS */}
@@ -121,3 +113,9 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+
+
+

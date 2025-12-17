@@ -4,28 +4,38 @@ interface Props {
   tasks: Task[];
 }
 
+// const ProgressTracker = ({ tasks }: Props) => {
+//   const total = tasks.length;
+//   const completed = tasks.filter(
+//     (t) => t.status === "Completed"
+//   ).length;
+
+//   const pending = total - completed;
+
+//   const overdue = tasks.filter(
+//     (t) =>
+//       new Date(t.dueDate) < new Date() &&
+//       t.status !== "Completed"
+//   ).length;
+
+//   const percentage =
+//     total === 0 ? 0 : Math.round((completed / total) * 100);
+
 const ProgressTracker = ({ tasks }: Props) => {
-  const total = tasks.length;
-  const completed = tasks.filter(
-    (t) => t.status === "Completed"
+  const safeTasks = Array.isArray(tasks) ? tasks : [];
+
+  const total = safeTasks.length;
+  const completed = safeTasks.filter((t) => t.status === "Completed").length;
+
+  const overdue = safeTasks.filter(
+    (t) => new Date(t.dueDate) < new Date() && t.status !== "Completed"
   ).length;
 
   const pending = total - completed;
-
-  const overdue = tasks.filter(
-    (t) =>
-      new Date(t.dueDate) < new Date() &&
-      t.status !== "Completed"
-  ).length;
-
-  const percentage =
-    total === 0 ? 0 : Math.round((completed / total) * 100);
-
+  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
   return (
     <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 space-y-4">
-      <h2 className="text-xl font-semibold text-white">
-        📊 Progress Tracker
-      </h2>
+      <h2 className="text-xl font-semibold text-white">📊 Progress Tracker</h2>
 
       {/* STATS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
@@ -36,23 +46,17 @@ const ProgressTracker = ({ tasks }: Props) => {
 
         <div className="bg-gray-800 p-4 rounded">
           <p className="text-gray-400 text-sm">Completed</p>
-          <p className="text-green-400 text-xl font-bold">
-            {completed}
-          </p>
+          <p className="text-green-400 text-xl font-bold">{completed}</p>
         </div>
 
         <div className="bg-gray-800 p-4 rounded">
           <p className="text-gray-400 text-sm">Pending</p>
-          <p className="text-yellow-400 text-xl font-bold">
-            {pending}
-          </p>
+          <p className="text-yellow-400 text-xl font-bold">{pending}</p>
         </div>
 
         <div className="bg-gray-800 p-4 rounded">
           <p className="text-gray-400 text-sm">Overdue</p>
-          <p className="text-red-400 text-xl font-bold">
-            {overdue}
-          </p>
+          <p className="text-red-400 text-xl font-bold">{overdue}</p>
         </div>
       </div>
 
