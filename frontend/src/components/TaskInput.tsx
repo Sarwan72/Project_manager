@@ -20,13 +20,13 @@ const TaskInput = ({ onSubmit }: Props) => {
     alert("Task title is required");
     return;
   }
-    onSubmit({
-        title: task.trim(),              
-   description: description.trim(),
-  dueDate: new Date(),      
+  onSubmit({
+  title: task.trim(),
+  description: description.trim(),
+  dueDate: new Date().toISOString(),
   priority,
-  status: "To Do",           
-    });
+  status: "To Do",
+});
 
    setTask("");
 setDescription("");

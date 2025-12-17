@@ -5,10 +5,10 @@ export interface Task {
   _id: string;
   title: string;
   description: string;
-  dueDate: string; // ISO date
+  dueDate: string;
   priority: Priority;
   status: Status;
-  creatorId: string;
-  assignedToId: string;
-  
+  creatorId?: string;
+  assignedToId?: string;
 }
+
