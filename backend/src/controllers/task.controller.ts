@@ -45,21 +45,7 @@ export const createTask = async (req: AuthRequest, res: Response) => {
 };
 
 
-// export const updateTask = async (req: AuthRequest, res: Response) => {
-//   const { id } = req.params;
 
-//   const task = await Task.findOneAndUpdate(
-//     { _id: id, creatorId: req.userId },
-//     req.body,
-//     { new: true, runValidators: true }
-//   );
-
-//   if (!task) {
-//     return res.status(404).json({ message: "Task not found" });
-//   }
-
-//   res.json(task);
-// };
 export const updateTask = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -96,15 +82,6 @@ export const updateTask = async (req: AuthRequest, res: Response) => {
 };
 
 
-// export const deleteTask = async (req: AuthRequest, res: Response) => {
-//   try {
-//     await Task.findByIdAndDelete(req.params.id);
-//     getIO().emit("task:deleted", req.params.id);
-//     res.status(204).send();
-//   } catch (error) {
-//     res.status(500).json({ message: "Task delete failed" });
-//   }
-// };
 
 export const deleteTask = async (req: AuthRequest, res: Response) => {
   try {

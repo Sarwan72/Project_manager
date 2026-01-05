@@ -8,7 +8,7 @@ export const initSocket = (server: http.Server) => {
     cors: {
       origin:[
     "http://localhost:5173",
-    "https://task-management-iapu.vercel.app",
+    "https://project-manager-chi-three.vercel.app",
   ],
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE"],
@@ -16,10 +16,10 @@ export const initSocket = (server: http.Server) => {
   });
 
   io.on("connection", (socket) => {
-    console.log("🟢 Socket connected:", socket.id);
+    console.log("Socket connected:", socket.id);
 
     socket.on("disconnect", () => {
-      console.log("🔴 Socket disconnected:", socket.id);
+      console.log("Socket disconnected:", socket.id);
     });
   });
 
