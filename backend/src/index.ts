@@ -18,7 +18,7 @@ app.use(
   cors({
     origin:[
     "http://localhost:5173",
-    "https://project-manager-chi-three.vercel.app/login",
+    "https://project-manager-chi-three.vercel.app",
   ],
     credentials: true,
   })
