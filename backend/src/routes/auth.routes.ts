@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 
-// Protected test route
+
 router.get("/profile", authMiddleware, (req, res) => {
   res.status(200).json({
     success: true,

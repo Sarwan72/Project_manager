@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <header className="bg-blue-600 text-white p-4 flex justify-between">
-      <h1 className="text-lg font-semibold">Task Manager</h1>
+      <h1 className="text-lg font-semibold">Project Manager</h1>
       <div className="flex gap-4 items-center">
         <span>Hello, {user?.name}</span>
         <button

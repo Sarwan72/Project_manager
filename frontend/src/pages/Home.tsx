@@ -19,10 +19,7 @@ import {
 const Home = () => {
   const queryClient = useQueryClient();
 
-  // const { data: tasks = [], isLoading } = useQuery<Task[]>({
-  //   queryKey: ["tasks"],
-  //   queryFn: fetchTasks,
-  // });
+
 
  const { data: tasks = [], isLoading } = useQuery<Task[]>({
   queryKey: ["tasks"],
@@ -69,7 +66,7 @@ const orderedTasks = [...tasks].reverse();
       <Header />
 
       <main className="max-w-6xl mx-auto p-6 space-y-6">
-        {/* CREATE TASK */}
+       
         <TaskInput onSubmit={(data) => createMutation.mutate(data)} />
 
         {/* TASK LIST */}
@@ -80,7 +77,7 @@ const orderedTasks = [...tasks].reverse();
 
           {!isLoading && tasks.length === 0 && (
             <p className="text-gray-500 text-center">
-              No tasks found. Create your first task 🚀
+              No tasks found. Create your first task 
             </p>
           )}
 
@@ -105,7 +102,7 @@ const orderedTasks = [...tasks].reverse();
           ))}
         </div>
 
-        {/* PROGRESS */}
+     
         <ProgressTracker tasks={tasks} />
       </main>
     </div>
@@ -113,8 +110,6 @@ const orderedTasks = [...tasks].reverse();
 };
 
 export default Home;
-
-
 
 
 

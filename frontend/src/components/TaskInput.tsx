@@ -1,15 +1,15 @@
 import { useState } from "react";
 import type { Task, Priority } from "../types/task";
-// import { nanoid } from "nanoid";
+
 interface Props {
   onSubmit: (task: Omit<Task, "_id">) => void;
 }
 
 const TaskInput = ({ onSubmit }: Props) => {
   const [task, setTask]= useState("");
-  // const [text, setText] = useState("");
+ 
   const [priority, setPriority] = useState<Priority>("Medium");
-  // const [category, setCategory] = useState<Category>("General");
+
   const [description, setDescription] = useState("");
 
 
@@ -39,7 +39,7 @@ setPriority("Medium");
       <input
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        placeholder="Enter your task"
+        placeholder="Enter Project Name"
         className="flex-1 bg-transparent text-white outline-none px-4"
       />
       <textarea
