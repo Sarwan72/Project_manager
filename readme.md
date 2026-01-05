@@ -5,14 +5,6 @@ The app supports **authentication, full CRUD operations, real-time updates**, an
 
 ---
 
-## 🚀 Live Demo
-
-- **Frontend:** http://localhost:5173  
-- **Backend API:** http://localhost:5000  
-
-> ⚠️ Replace with deployed URLs (Vercel / Netlify / Render) before final submission.
-
----
 
 ## 🧩 Tech Stack
 

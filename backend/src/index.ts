@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes";
 import taskRoutes from "./routes/task.routes";
 import { initSocket } from "./socket";
 
+const PORT = process.env.PORT || 5000;
 dotenv.config();
 connectDB();
 
@@ -38,6 +39,6 @@ const server = http.createServer(app);
 initSocket(server);
 
 
-server.listen(5000, () => {
+server.listen(PORT, () => {
   console.log("Server running on port 5000");
 });
